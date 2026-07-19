@@ -7,7 +7,7 @@ from datetime import date
 engine = create_engine("sqlite:///../data/db/invoices.db")
 Base.metadata.create_all(engine)  
 
-session = Session(engine)
+session_db = Session(engine)
 
 
 # TODO: pridat mechanismus pro unique username, invoice num atd 

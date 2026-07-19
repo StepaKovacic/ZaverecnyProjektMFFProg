@@ -17,6 +17,11 @@ class User(Base):
     ico = Column(String, nullable=True)           
     phone = Column(String, nullable=True)
     bank_account = Column(String, nullable=True)     
+    sessions = relationship(
+        "Session",
+        back_populates="user",
+        cascade="all, delete-orphan"
+    )
     invoices = relationship(
         "Invoice",
         back_populates="owner_shortcut",
@@ -62,3 +67,17 @@ class Item(Base):
    
     def __repr__(self):
         return f"{self.name} - quantity {self.quantity}"
+
+
+class Session(Base):
+    __tablename__ = "sessions"
+    id = Column(Integer, primary_key=True)
+    token = Column(String, unique=True, nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    created = Column(DateTime, default=datetime.utcnow)
+    expiration = Column(DateTime, nullable=False)
+ 
+    user = relationship("User", back_populates="sessions")
+ 
+    def __repr__(self):
+        return f"{self.user_id} until {self.expires_at}"

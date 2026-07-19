@@ -22,7 +22,7 @@
                 <ul class="navbar-nav">
                   
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Přihlásit se</a>
+                        <a class="nav-link" href="/login">Přihlásit se</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/register">Vytvorit ucet</a>
@@ -37,7 +37,13 @@
             </div>
         </div>
     </nav>
-    <div class="container">{% block content %}{% endblock %}</div>
+    <div class="container">
+        <br>
+        {% if username %}
+        Prihlasen jako {{username}}
+        {% endif %}
+        
+        {% block content %}{% endblock %}</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>

@@ -2,6 +2,19 @@
 {% block title %}Registrace{% endblock %}
 {% block content %}
 
+{% if problem %}
+<br>
+<div class="alert alert-danger" role="alert">
+  {% if problem == "email" %}
+  Účet s tímto emailem už někdo používá
+  {% elif problem == "username" %}
+  Účet s tímto uživatelským jménem už někdo používá
+  {% endif %}
+
+  
+</div>
+
+{% endif %}
 <form action="/register" method="post">
   <div class="form-group">
     <label for="username">Uživatelské jméno</label>
