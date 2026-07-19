@@ -36,7 +36,10 @@ async def index(request: Request, session_token: str | None = Cookie(default=Non
     if session_token:
         user_id = get_user_id_from_session(token=session_token)
         print(user_id)
-    return templates.TemplateResponse(request = request, name="index.html")
+
+        user_info = session_db.query(User).filter(User.id == user_id).one_or_none()
+        print(user_info.first_name)
+    return templates.TemplateResponse(request = request, name="index.html", context={"username":user_id})
 
 @App.get("/register", response_class = HTMLResponse)
 async def register_view(request: Request, user_agent: Annotated[str | None, Header()] = None):
