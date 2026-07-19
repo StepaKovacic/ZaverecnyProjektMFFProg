@@ -12,9 +12,9 @@ class User(Base):
     email = Column(String, unique=True, nullable=False, index=True)
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
-    ico = Column(String, nullable=False)           
+    first_name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
+    ico = Column(String, nullable=True)           
     phone = Column(String, nullable=True)
     bank_account = Column(String, nullable=True)     
     invoices = relationship(
