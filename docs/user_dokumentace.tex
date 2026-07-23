@@ -1,0 +1,87 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+
+\begin{document}
+
+\noindent
+{\large \textbf{Štěpán Kovačič}} \hfill {Uživatelská dokumentace k závěrečnému projektu z předmětu NMIN112}\\[-0.2em]
+
+\vspace{0.4em}
+\hrule
+\vspace{0.6em}
+
+\section*{Úvod}
+Tenhle dokument popisuje, jak si aplikaci stáhnout, spustit a jak se s ní
+pak pracuje z pohledu běžného uživatele.
+
+\section{Stažení a spuštění}
+
+Nejdřív je potřeba naklonovat repozitář:
+
+\begin{verbatim}
+git clone https://github.com/stepakovacic/ZaverecnyProjektMFFProg.git
+cd ZaverecnyProjektMFFProg
+\end{verbatim}
+
+Dál je potřeba nainstalovat závislosti ze souboru \texttt{requirements.txt}:
+
+\begin{verbatim}
+pip install -r setup/requirements.txt
+\end{verbatim}
+
+Pro export faktur do PDF musí mít počítač taky nainstalovaný
+\texttt{pdflatex}. Bez toho export
+sice zbytek aplikace neovlivní, ale tlačítko "pdf export" nebude fungovat.
+
+Nakonec se aplikace spustí příkazem (z adresáře \texttt{app}):
+
+\begin{verbatim}
+cd app
+uvicorn main:App --reload
+\end{verbatim}
+
+Aplikace pak poběží na adrese \url{http://127.0.0.1:8000}, kterou stačí
+otevřít v prohlížeči.
+
+\section{Registrace a přihlášení}
+Na hlavní stránce je odkaz na registraci. Stačí vyplnit uživatelské jméno,
+email a heslo - zbytek (jméno, IČO, telefon, číslo účtu) je nepovinné a dá se
+doplnit později přes stránku "Profil". Po registraci se člověk přesměruje na
+přihlašovací stránku, kde zadá stejné jméno a heslo, který si při registraci
+zvolil.
+
+Po úspěšném přihlášení zůstává uživatel přihlášený i po zavření a znovu
+otevření prohlížeče, dokud se sám neodhlásí přes odkaz v navigaci.
+
+\section{Vytvoření faktury}
+V navigaci je odkaz "Přehled faktur", kde jde vidět seznam všech faktur
+patřících přihlášenému uživateli. Nová faktura se vytváří přes formulář, kde
+se vyplní údaje o odběrateli (jméno, adresa, IČO) a datumy vystavení a
+splatnosti. Číslo faktury se generuje automaticky (formát rok + pořadové
+číslo, např. 2026001), takže ho není potřeba zadávat ručně.
+
+\section{Položky faktury}
+Na stránce konkrétní faktury jde přidávat jednotlivé položky - název,
+množství a cena za kus. Celková cena položky i celkový součet faktury se
+počítá automaticky. Položku jde i smazat, pokud se přidala omylem.
+
+\section{Štítky}
+Uživatel si může vytvořit vlastní štítky (název + barva) přes stránku
+"Tagy". Vytvořený štítek jde pak přiřadit k libovolné faktuře - jedna
+faktura může mít víc štítků a stejný štítek jde použít na víc faktur
+zaroveň. Smazání faktury štítek nesmaže, protože štítek patří uživateli, ne
+konkrétní faktuře.
+
+\section{Export do PDF}
+Na stránce faktury je tlačítko "pdf export", který vygeneruje fakturu ve
+formátu PDF a nabídne ji ke stažení. Pokud se faktura od posledního stažení
+změnila (přidala/smazala se položka), PDF se při dalším stažení vygeneruje
+znovu s aktuálními daty.
+
+\section{Odhlášení}
+Odkaz "Odhlásit se" v navigaci ukončí přihlášení a přesměruje zpět na
+přihlašovací stránku.
+
+\end{document}

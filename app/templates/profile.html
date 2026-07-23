@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Osobní údaje{% endblock %}
+{% block content %}
+<h2>Osobní údaje</h2>
+<form action="/profile" method="post">
+  <label>Křestní jméno</label>
+  <input type="text" name="first_name" class="form-control" value="{{ user.first_name or '' }}">
+
+  <label>Příjmení</label>
+  <input type="text" name="last_name" class="form-control" value="{{ user.last_name or '' }}">
+
+  <label>IČO</label>
+  <input type="text" name="ico" class="form-control" value="{{ user.ico or '' }}">
+
+  <label>Telefon</label>
+  <input type="text" name="phone" class="form-control" value="{{ user.phone or '' }}">
+
+  <label>Číslo účtu</label>
+  <input type="text" name="bank_account" class="form-control" value="{{ user.bank_account or '' }}">
+
+  <br>
+  <button type="submit" class="btn btn-primary">Uložit</button>
+</form>
+{% endblock %}

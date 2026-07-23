@@ -422,3 +422,29 @@ async def unassign_tag(
         raise HTTPException(status_code=403, detail="403")
 
     return RedirectResponse(url=f"/invoices/{invoice_id}", status_code=status.HTTP_303_SEE_OTHER)
+
+
+
+@App.get("/profile", response_class=HTMLResponse)
+async def profile_view(request: Request, current_user: User = Depends(required_login)):
+    return templates.TemplateResponse(request=request, name="profile.html", context={"user": current_user})
+
+
+@App.post("/profile")
+async def update_profile(
+    current_user: User = Depends(required_login),
+    first_name: str | None = Form(default=None),
+    last_name: str | None = Form(default=None),
+    ico: str | None = Form(default=None),
+    phone: str | None = Form(default=None),
+    bank_account: str | None = Form(default=None),
+):
+    current_user.first_name = first_name
+    current_user.last_name = last_name
+    current_user.ico = ico
+    current_user.phone = phone
+    current_user.bank_account = bank_account
+    session_db.add(current_user)
+    session_db.commit()
+
+    return RedirectResponse(url="/profile", status_code=status.HTTP_303_SEE_OTHER)

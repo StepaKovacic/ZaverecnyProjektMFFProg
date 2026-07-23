@@ -1,0 +1,144 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+
+
+\begin{document}
+
+
+
+\noindent
+{\large \textbf{Štěpán Kovačič}} \hfill {Programátorská dokumentace k závěrečnému projektu z předmětu NMIN112}\\[-0.2em]
+
+\vspace{0.4em}
+\hrule
+\vspace{0.6em}
+
+\section*{Úvod}
+Projekt je webová aplikace na generování faktur, postavená na frameworku FastAPI.
+Databázová vrstva je řešena přes SQLAlchemy ORM, šablony přes Jinja2 (Bootstrap
+frontend) a export faktury do PDF přes \texttt{pdflatex}.
+
+\section{Architektura}
+Aplikace je rozdělená do několika souborů:
+\begin{itemize}
+    \item \texttt{models.py} - ORM a databázová schémata
+    \item \texttt{dbHandler.py} - vytvoření a passování databázové session
+    \item \texttt{authHandling.py} - vytváření, ověřování a mazání sessions pro usery
+    \item \texttt{utils.py} - pomocné funkce pro chod backendu, debuging a generování čísel faktur atd.
+    \item \texttt{main.py} - backend endpointy
+\end{itemize}
+
+\section{Datová schémata a ORM}
+Databáze obsahuje pět tabulek:
+
+\begin{itemize}
+    \item \textbf{User} - uživatel aplikace, obsahuje přihlašovací i business
+    údaje 
+    \item \textbf{Invoice} - faktura, navázaná na \texttt{User} přes
+    \texttt{owner\_id}
+    \item \textbf{Item} - položka faktury, navázaná na konkrétní \texttt{Invoice} a při smazání faktury se položky smažou také -
+    \texttt{cascade="all, delete-orphan"}
+    \item \textbf{Tag} - uživatelem definovaný štítek. Patří
+    \texttt{User} - smazání faktury štítek nesmaže, protože
+    stejný štítek může být přiřazen k více fakturám najednou
+    \item \textbf{Session} - přihlašovací session (viz Autentizace)
+\end{itemize}
+
+Vztah mezi \texttt{Invoice} a \texttt{Tag} je řešen jako many-to-many přes
+ tabulku \texttt{invoice\_tags}, s \texttt{ondelete="CASCADE"} na obou
+cizích klíčích - smazání faktury smaže jen řádek přiřazení, ne samotný štítek.
+
+\section{Autentizace a session management}
+Po úspěšném přihlášení se vygeneruje náhodný token
+(\texttt{secrets.token\_urlsafe}), uloží se do tabulky \texttt{sessions} spolu
+s \texttt{user\_id} a časem expirace, a pošle se klientovi jako \texttt{httponly}
+cookie. Při každém requestu se token z cookie spáruje s řádkem v databázi a
+checkne se, že nevypršel.
+
+
+\section{Generování PDF faktury}
+Export faktury do PDF je řešený bez Jinja - Latex obsah
+faktury se sestavuje přímo v Pythonu jako f-string, spojením pevné
+hlavičky, dynamicky sestaveného těla (loop přes položky faktury) a pevné
+patičky. Výsledný \texttt{.tex} soubor se pak zkompiluje voláním
+\texttt{pdflatex} přes \texttt{subprocess.run()}, s parametrem
+\texttt{-jobname} pro pojmenování výstupu a \texttt{-output-directory} pro
+uložení do \texttt{data/invoices/}. Pomocné soubory (\texttt{.aux},
+\texttt{.log}) se po kompilaci smažou.
+
+\section{Routování}
+Všechny FastAPI endpointy jsou v jednom souboru \texttt{main.py}. Chráněné
+endpointy (vyžadující přihlášení) používají společnou dependency
+\texttt{required\_login}, která ověří cookie se session tokenem a vrátí
+odpovídajícího uživatele, nebo vyhodí \texttt{401}. U operací nad konkrétní
+fakturou/položkou/štítkem se navíc kontroluje, že záznam patří přihlášenému
+uživateli (\texttt{403}, pokud ne).
+
+Níže je seznam endpointů
+\begin{itemize}
+    \item \verb|@App.get("/")|
+    \item \verb|@App.get("/register")|
+    \item \verb|@App.get("/success")|
+    \item \verb|@App.get("/invoices/{invoice_id}/delete")|
+    \item \verb|@App.get("/invoices/new")|
+    \item \verb|@App.post("/invoices/new")|
+    \item \verb|@App.get("/invoices/{invoice_id}/items/delete/{item_id}")|
+    \item \verb|@App.get("/invoices/{invoice_id}/items/new")|
+    \item \verb|@App.post("/invoices/{invoice_id}/items")|
+    \item \verb|@App.post("/register")|
+    \item \verb|@App.post("/login")|
+    \item \verb|@App.get("/logout")|
+    \item \verb|@App.get("/invoices")|
+    \item \verb|@App.get("/invoices/{invoice_id}")|
+    \item \verb|@App.get("/invoices/{invoice_id}/pdf")|
+    \item \verb|@App.get("/tags")|
+    \item \verb|@App.get("/tags/new")|
+    \item \verb|@App.post("/tags/new")|
+    \item \verb|@App.get("/tags/{id}/delete")|
+    \item \verb|@App.post("/invoices/{invoice_id}/tags")|
+    \item \verb|@App.get("/invoices/{invoice_id}/tags/{tag_id}/remove")|
+    \item \verb|@App.get("/profile")|
+    \item \verb|@App.post("/profile")|
+\end{itemize}
+ 
+
+
+
+\section{Možná vylepšení}
+\begin{itemize}
+    \item \textbf{Globální databázová session} - doporučené řešení
+    přes \texttt{Depends()} a session per request + prřípadně redis.
+    \item \textbf{Generování čísla faktury} obsahuje teoretickou race
+    condition - dva requesty ve stejnou chvíli na vytvoření faktury mohou zjistit
+    stejné "poslední číslo" a vygenerovat duplicitu. 
+    \item \textbf{Jeden soubor pro všechny endpointy} - s rostoucím počtem
+    endpointů by bylo přehlednější rozdělit \texttt{main.py} na víc modulů
+    (přes \texttt{APIRouter}), zvlášť pro autentizaci, faktury a štítky.
+  \end{itemize} 
+
+
+
+\section*{Zdroje}
+\begin{itemize}
+    \item \url{https://fastapi.tiangolo.com/}
+    \item \url{https://fastapi.tiangolo.com/tutorial/security/}
+    \item \url{https://fastapi.tiangolo.com/advanced/templates/}
+    \item \url{https://jinja.palletsprojects.com/}
+    \item \url{https://jinja.palletsprojects.com/en/stable/templates/}
+    \item \url{https://docs.sqlalchemy.org/en/20/orm/cascades.html}
+    \item \url{https://getbootstrap.com/docs/5.3/getting-started/introduction/}
+    \item \url{https://realpython.com/fastapi-jinja2-template/}
+    \item \url{https://jordanisaacs.github.io/fastapi-sessions/guide/getting_started/}
+    \item \url{https://www.youtube.com/watch?v=k5WTeOI39NE}
+    \item \url{https://www.youtube.com/watch?v=aAy-B6KPld8}
+    \item \url{https://www.djangoproject.com/}
+\end{itemize}
+
+
+Poznámka ke zdrojům. Používal jsem mé starší projekty a recykloval struktury. Inspiroval jsem se Djangem, jelikož jsem v něm dříve dělal několik profesionálních zakázek a mám v něm zkušenost. Zkušenosti a konvenci z něj jsem se snažil přenést do FastApi do takové míry abych mohl stále naplno používat native functions tohoto frameworku, ale přesto mít nějakou strukturu se kterou jsem seznámen. 
+\end{document}

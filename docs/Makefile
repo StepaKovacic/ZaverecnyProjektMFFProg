@@ -1,3 +1,3 @@
 all:
 	pdflatex *.tex
-	rm -f *.log *.aux *.fls *.fdb_latexmk
+	rm -f *.log *.aux *.fls *.fdb_latexmk *.gz *.out
