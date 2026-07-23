@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Tags{% endblock %}
+{% block content %}
+
+<a href="/tags" class="btn btn-primary">Jit zpet</a>
+
+<form action="/tags/new", method="post">
+    <div class="form-group">
+        <label for="name">Jmeno tagu</label>
+        <input type="text" name="name" id="name">
+    </div>
+    <div class="form-group">
+        <label for="color">Barva</label>
+        <input type="color" name="color" id="color">
+    </div>
+    <button type="submit" class="btn btn-primary">Potvrdit</button>
+</form>
+
+{% endblock %}
+
+

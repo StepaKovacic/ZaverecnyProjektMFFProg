@@ -1,0 +1,43 @@
+
+            \documentclass{letter}
+            \usepackage[utf8]{inputenc}
+            \usepackage[left=1in,top=1in,right=1in,bottom=1in]{geometry}
+            \usepackage{tabularx}
+
+            \begin{document}
+            \thispagestyle{empty}
+            
+            \textbf{\Large faktura č. 20260001}
+
+            \vspace{0.5cm}
+            \begin{tabularx}{\textwidth}{X X}
+            \textbf{Dodavatel} & \textbf{Odběratel} \\[0.2cm]
+            s s & asdf \\
+            IČO: 2 & 23 \\
+            Tel: 2 \\
+             &
+            \end{tabularx}
+
+            \vspace{0.5cm}
+            \begin{tabularx}{\textwidth}{l l}
+            Datum vystavení: & 0003-03-31 \\
+            Datum splatnosti: & 0003-03-31 \\
+            Ičo zákazníka: & 33 \\
+            \end{tabularx}
+
+            \vspace{0.7cm}
+            \begin{tabularx}{\textwidth}{X c c c}
+            \hline
+            \textbf{Položka} & \textbf{Množství} & \textbf{Cena/ks} & \textbf{Celkem} \\
+            \hline
+            
+            \hline
+            \end{tabularx}
+
+            \vspace{0.5cm}
+            \begin{flushright}
+            \textbf{\Large Celkem k úhradě: 0.00 Kč}
+            \end{flushright}
+            
+            \end{document}
+            

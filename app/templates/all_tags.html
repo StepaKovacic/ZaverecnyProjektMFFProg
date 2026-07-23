@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Tags{% endblock %}
+{% block content %}
+
+<a href="/tags/new" class="btn btn-primary">Novy tag</a>
+
+<table class="table">
+  <thead>
+    <tr>
+        <th scope="col">Jméno</th>
+        <th scope="col">Barva</th>
+        <th scope="col">Akce</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for tag in tags %}
+    <tr>
+      <th scope="row">{{tag.name}}</th>
+      <td style="color: {{tag.color}};">{{tag.color}}</td>
+    <td><a href="/tags/{{tag.id}}/delete">smazat</a></td>
+    </tr>
+ 
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+
+

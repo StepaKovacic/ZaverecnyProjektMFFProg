@@ -23,7 +23,7 @@ class REGISTERCredentials(BaseModel):
     last_name: Annotated[str, Doc("last name")]
 
 
-def create_session(user_id: int) -> str:
+def create_session(user_id: int):
     token = secrets.token_urlsafe(32)  
     new_session = Session(
         token=token,
@@ -35,7 +35,7 @@ def create_session(user_id: int) -> str:
     return token
 
 
-def get_user_id_from_session(token: str) -> int | None:
+def get_user_id_from_session(token: str):
     existing = db_session.query(Session).filter(Session.token == token).one_or_none()
     if existing is None:
         return None
@@ -52,7 +52,7 @@ def get_user_id_from_session(token: str) -> int | None:
 
 
 
-def delete_session(token: str) -> None:
+def delete_session(token: str):
     existing = db_session.query(Session).filter(Session.token == token).one_or_none()
     if existing is not None:
         db_session.delete(existing)

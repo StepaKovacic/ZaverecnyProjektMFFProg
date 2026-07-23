@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Nova faktura{% endblock %}
+{% block content %}
+<h2>Nova faktura</h2>
+{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+<form action="/invoices/new" method="post">
+  <label>Klient</label>
+  <input type="text" name="customer_name" class="form-control" required>
+
+  <label>Adresa klienta</label>
+  <input type="text" name="customer_address" class="form-control" required>
+
+  <label>Datum vystaveni</label>
+  <input type="date" name="date_issued" class="form-control" required>
+
+  <label>Datum splatnosti</label>
+  <input type="date" name="date_due" class="form-control" required>
+
+  <label>Ičo zákazníka</label>
+  <input type="text" name="customer_ico" class="form-control" required>
+
+  <label>Variabilni symbol</label>
+  <input type="text" name="variable_symbol" class="form-control">
+
+  <br>
+  <button type="submit" class="btn btn-primary">Vytvorit fakturu</button>
+</form>
+{% endblock %}

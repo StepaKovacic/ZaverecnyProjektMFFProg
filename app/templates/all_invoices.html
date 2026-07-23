@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Invoices{% endblock %}
+{% block content %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">odkaz</th>
+      <th scope="col">tagy</th>
+      <th scope="col">cislo</th>
+      <th scope="col">klient</th>
+      <th scope="col">akce</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for invoice in invoices %}
+    <tr>
+        <td><a href="/invoices/{{ invoice.id }}">prejit na fakturu</a></td>
+        <td>
+                    {% for tag in invoice.tags %}
+            <span class="badge" style="background-color: {{ tag.color }}">{{ tag.name }}</span>
+              {% endfor %}
+          </td>
+          <td>{{ invoice.invoice_number }}</td>
+          <td>{{ invoice.customer_name }}</td>
+        <td><a href="/invoices/{{ invoice.id }}/delete">smazat</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

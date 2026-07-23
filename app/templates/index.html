@@ -3,5 +3,87 @@
 {% block title %}Hlavní strana{% endblock %}
 
 {% block content %} 
-<h2>pes</h2>
+
+<h1>Téma zápočtového programu</h1>
+<ul>
+    <li>Aplikace v Pythonu postavená na frameworku FastAPI bude sloužit jako generátor faktur s templatingem v Jinja2. Bude obsahovat databázi uživatelů s autentizačním mechanismem a úložiště faktur ve formě souborů.</li>
+    <li>Uživatelé budou moci vytvářet nové faktury, mazat existující a přiřazovat k nim štítky. Aplikace umožní i zpětné zobrazení dříve uložených faktur.</li>
+</ul>
+ 
+<h1>Specifikace programu</h1>
+ 
+<h2>1. Popis a zaměření programu</h2>
+<ul>
+    <li>Jedná se o program na generování faktur pomocí webového rozhraní.</li>
+    <li>Výstup programu (faktura) bude ve formátu PDF, kterou si člověk bude moci stáhnout.</li>
+    <li>Systémy na generování faktur jsou často složité na ovládání a placené. V případě AI je spíše překážka správné formátování souboru a layout.</li>
+</ul>
+ 
+<hr>
+ 
+<h2>2. Popis funkcionality</h2>
+ 
+<h3>2.1. Funkce 1</h3>
+<p><strong>Autentizace a autorizace</strong> uživatelů a držení session na straně serveru / počítače, na kterém je systém hostovaný.</p>
+ 
+<h3>2.2. Funkce 2</h3>
+<p><strong>Vytvoření položek faktury</strong> pomocí HTML/JS formuláře s POST endpointem ve FastAPI.</p>
+ 
+<h3>2.3. Funkce 3</h3>
+<p><strong>Uložení a mazání faktury</strong> v rozhraní uživatele.</p>
+ 
+<h3>2.4. Funkce 4</h3>
+<p><strong>Přiřazení štítku k faktuře</strong> v rozhraní uživatele.</p>
+ 
+<h3>2.5. Funkce 5</h3>
+<p><strong>Export faktury</strong> v rozhraní uživatele.</p>
+ 
+<hr>
+ 
+<h2>3. Uživatelské rozhraní, vstupy a výstupy</h2>
+ 
+<h3>3.1. Obrazovky</h3>
+ 
+<h4>3.1.1. Obrazovka 1</h4>
+<p>Registration page, na které člověk vytvoří přihlašovací údaje. Tvorba v HTML, JS, Bootstrap.</p>
+ 
+<h4>3.1.2. Obrazovka 2</h4>
+<p>Login page, na které se člověk může přihlásit ke svému účtu.</p>
+ 
+<h4>3.1.3. Obrazovka 3</h4>
+<p>Invoice Form, na které člověk upravuje HTML formulář s informacemi o firmě, ceně atd.</p>
+ 
+<h4>3.1.4. Obrazovka 4</h4>
+<p>User page, kde člověk provádí akce jako mazání, export, štítkování...</p>
+ 
+<hr>
+ 
+<h2>4. Použité technologie</h2>
+ 
+<h4>4.1 Frontend</h4>
+<p>HTML, JavaScript, Bootstrap</p>
+ 
+<h4>4.2 Backend</h4>
+<p>FastAPI, Jinja, Redis, SQL, Uvicorn</p>
+ 
+<hr>
+ 
+<h2>5. Odkazy (reference)</h2>
+<ul>
+    <li>Dokumentace FastAPI - <a href="https://fastapi.tiangolo.com/" target="_blank" rel="noopener">fastapi.tiangolo.com</a></li>
+    <li>Bootstrap Docs</li>
+    <li>YouTube</li>
+    <li>W3Schools</li>
+    <li>GeeksforGeeks.com</li>
+    <li>Reddit</li>
+    <li>Google</li>
+</ul>
+ 
+<hr>
+ 
+<h2>6. Použití AI</h2>
+<div class="disclaimer">
+    <p>Prohlašuji, že z morálních a etických důvodů nikdy při tvorbě nepoužiju AI.</p>
+    <p>Nevím, zda je vůbec povolená, nicméně ji nepoužiji.</p>
+</div>
 {% endblock %}

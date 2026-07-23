@@ -12,7 +12,9 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="/">Jarmil - Fakturacni Nastroj</a>
+            <a class="navbar-brand" href="/">Jarmil - Fakturacni Nastroj - {% if username %}
+        ID uživatele {{username}}
+        {% endif %}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -31,7 +33,10 @@
                         <a class="nav-link" href="#">Vytvořit fakturu</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Prehled faktur</a>
+                        <a href="/invoices" class="nav-link">Prehled faktur</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/logout" class="nav-link">Odhlasit se</a>
                     </li>
                 </ul>
             </div>
@@ -39,9 +44,7 @@
     </nav>
     <div class="container">
         <br>
-        {% if username %}
-        Prihlasen jako {{username}}
-        {% endif %}
+        
         
         {% block content %}{% endblock %}</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

@@ -2,3 +2,15 @@
 - frontend rendering 
 - auth !!!
 - session management 
+- spranve hasovani 
+- create item 
+- change personal info 
+- craetge invoice 
+- exporti nvoice 
+- ucesta front 
+- permisions 
+- login register hide 
+logout button 
+- buttons redirects 
+- comments and verification
+-main page s 
